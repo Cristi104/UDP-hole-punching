@@ -1,0 +1,109 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./Docker/Host-Client/Dockerfile
+    privileged: true
+    volumes:
+      - ..:/elocal
+    tty: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      www:
+        - ipv4_address: 10.42.0.2
+    command: python3 Server.py
+
+  router1:
+    build:
+      context: .
+      dockerfile: ./Docker/Router/Dockerfile
+    privileged: true
+    volumes:
+      - ..:/elocal
+    tty: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      www:
+        - ipv4_address: 10.42.0.3
+      net1:
+        - ipv4_address: 192.168.11.1
+
+  router2:
+    build:
+      context: .
+      dockerfile: ./Docker/Router/Dockerfile
+    privileged: true
+    volumes:
+      - ..:/elocal
+    tty: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      www:
+        - ipv4_address: 10.42.0.4
+      net2:
+        - ipv4_address: 192.168.12.1
+
+  client1:
+    build:
+      context: .
+      dockerfile: ./Docker/Host-Client/Dockerfile
+    privileged: true
+    volumes:
+      - ..:/elocal
+    tty: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      net1:
+        - ipv4_address: 192.168.11.2
+    command: python3 Client.py
+
+  client2:
+    build:
+      context: .
+      dockerfile: ./Docker/Host-Client/Dockerfile
+    privileged: true
+    volumes:
+      - ..:/elocal
+    tty: true
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_ADMIN
+    networks:
+      net2:
+        - ipv4_address: 192.168.12.2
+    command: python3 Client.py
+
+networks:
+  www:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.42.0.0/16
+          gateway: 10.42.0.1
+
+  net1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.11.0/24
+          gateway: 192.168.11.1
+
+  net2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.12.0/24
+          gateway: 192.168.12.1
