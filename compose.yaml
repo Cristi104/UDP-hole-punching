@@ -14,7 +14,8 @@ services:
     networks:
       www:
         ipv4_address: 10.42.0.2
-    command: python3 /elocal/Server.py
+#    command: python3 /elocal/Server.py
+    command: /bin/bash -c "/elocal/config/server.sh && sleep infinity"
 
   router1:
     build:
@@ -52,6 +53,7 @@ services:
         ipv4_address: 10.42.0.4
       net2:
         ipv4_address: 192.168.12.1
+    command: /bin/bash -c "/entrypoint.sh && sleep infinity"
 
   client1:
     build:
