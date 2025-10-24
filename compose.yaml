@@ -14,7 +14,6 @@ services:
     networks:
       www:
         ipv4_address: 10.42.0.2
-#    command: python3 /elocal/Server.py
     command: /bin/bash -c "/elocal/config/server.sh && sleep infinity"
 
   router1:
@@ -34,7 +33,7 @@ services:
         ipv4_address: 10.42.0.3
       net1:
         ipv4_address: 192.168.11.1
-    command: /bin/bash -c "/entrypoint.sh && sleep infinity"
+    command: /bin/bash -c "/elocal/config/router.sh && sleep infinity"
 
   router2:
     build:
@@ -53,12 +52,11 @@ services:
         ipv4_address: 10.42.0.4
       net2:
         ipv4_address: 192.168.12.1
-    command: /bin/bash -c "/entrypoint.sh && sleep infinity"
+    command: /bin/bash -c "/elocal/config/router.sh && sleep infinity"
 
   client1:
     build:
       context: .
-#      dockerfile: ./Docker/Router/Dockerfile
       dockerfile: ./Docker/Host-Client/Dockerfile
     privileged: true
     volumes:
