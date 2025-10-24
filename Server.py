@@ -28,8 +28,8 @@ while True:
         addr2 = addr
 
     if addr1 is not None and addr2 is not None:
-        sock.sendto(f"{addr1[0]} {addr1[1]}".encode('utf-8'), addr2)
-        sock.sendto(f"{addr2[0]} {addr2[1]}".encode('utf-8'), addr1)
+        sock.sendto(f"{addr1[0]}:{addr1[1]}".encode('utf-8'), addr2)
+        sock.sendto(f"{addr2[0]}:{addr2[1]}".encode('utf-8'), addr1)
         addr1 = None
         addr2 = None
 
